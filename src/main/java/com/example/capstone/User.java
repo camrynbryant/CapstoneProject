@@ -1,16 +1,16 @@
-package com.example.demo;
+package com.example.capstone;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "users")  // Maps to MongoDB Collection
+@Document(collection = "users")  
 public class User {
     @Id
     private String id;
     private String name;
     private String email;
 
-    public User() {}  // Default Constructor
+    public User() {}  
 
     public User(String name, String email) {
         this.name = name;

@@ -1,9 +1,9 @@
-package com.example.demo.controller;
+package com.example.capstone.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.example.demo.User;
-import com.example.demo.repository.UserRepository;
+import com.example.capstone.User;
+import com.example.capstone.repository.UserRepository;
 
 import java.util.List;
 
