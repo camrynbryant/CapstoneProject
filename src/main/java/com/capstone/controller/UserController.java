@@ -1,14 +1,14 @@
-package com.example.capstone.controller;
+package com.capstone.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.example.capstone.User;
-import com.example.capstone.repository.UserRepository;
+import com.capstone.models.User;
+import com.capstone.repository.UserRepository;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired

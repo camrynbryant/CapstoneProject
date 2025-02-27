@@ -32,25 +32,20 @@ build/
 ### VS Code ###
 .vscode/
 
-# Ignore build files
 /target/
 /out/
 
-# Ignore environment files
 *.env
 *.log
 .DS_Store
 
-# Ignore system files
 /node_modules/
 /.idea/
 /.vscode/
 /tmp/
 /*.iml
 
-# Ignore macOS-specific files
 Thumbs.db
-# Ignore user-specific and sensitive files
+
 *.log
 *.env
-*.history

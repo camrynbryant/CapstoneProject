@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { addUser, getAllUsers } from "./api";
+import { addUser, getAllUsers } from "../api/userService"; 
 
 function App() {
   const [name, setName] = useState("");
