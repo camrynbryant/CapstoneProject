@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:3000") 
 @RestController
 @RequestMapping("/api")
 public class AuthController {
@@ -24,4 +23,13 @@ public class AuthController {
 
         return userService.registerUser(name, email, password);
     }
+
+    @PostMapping("/login")  
+public ResponseEntity<?> loginUser(@RequestBody Map<String, String> request) {
+    String email = request.get("email");
+    String password = request.get("password");
+
+    return userService.authenticateUser(email, password);
+}
+
 }
