@@ -14,7 +14,7 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -29,23 +29,21 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
 .vscode/
 
 /target/
 /out/
+/node_modules/  
+
+!frontend/package.json  
+!frontend/package-lock.json  
+!pom.xml  
 
 *.env
 *.log
 .DS_Store
-
-/node_modules/
 /.idea/
 /.vscode/
 /tmp/
 /*.iml
-
 Thumbs.db
-
-*.log
-*.env
