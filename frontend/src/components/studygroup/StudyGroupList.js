@@ -23,7 +23,7 @@ const StudyGroupList = () => {
     if (!token) return null;
     const decoded = jwtDecode(token);
     return {
-      email: decoded.sub, // assuming the email is stored in 'sub'
+      email: decoded.sub,
       name: decoded.name,
     };
   };
@@ -56,11 +56,12 @@ const StudyGroupList = () => {
 
   const handleDelete = async (group) => {
     if (!currentUser) return;
-    // Allow deletion only if current user is the owner
     if (group.owner !== currentUser.email) {
       alert("Only the group owner can delete the study group.");
       return;
     }
+    const confirmed = window.confirm("Are you sure you want to delete the group?");
+    if (!confirmed) return;
     try {
       await deleteStudyGroup(group.id);
       fetchGroups();
@@ -91,7 +92,6 @@ const StudyGroupList = () => {
             )}
             {currentUser && group.owner === currentUser.email && (
               <>
-                {/* The owner is automatically a member so no join button */}
                 <button onClick={() => handleDelete(group)} style={{ backgroundColor: "#f44336", color: "white" }}>
                   Delete Group
                 </button>
