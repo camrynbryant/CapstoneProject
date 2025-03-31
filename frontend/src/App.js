@@ -1,17 +1,19 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import Home from "./components/Home";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import Logout from "./components/auth/Logout";
 import StudyGroupPage from "./components/studygroup/StudyGroupPage";
+import "./App.css";
 
 function App() {
   return (
     <Router>
-      <div>
-        <h1>Virtual Study Platform</h1>
+      <div className="App">
         <nav>
           <ul>
+            <li><Link to="/">Home</Link></li>
             <li><Link to="/register">Register</Link></li>
             <li><Link to="/login">Login</Link></li>
             <li><Link to="/logout">Logout</Link></li>
@@ -19,6 +21,7 @@ function App() {
           </ul>
         </nav>
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />

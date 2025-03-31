@@ -5,9 +5,9 @@ const Logout = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Remove the stored token
+    localStorage.removeItem("token"); 
     alert("You have been logged out successfully!");
-    navigate("/login"); // Redirect to login page
+    navigate("/login"); 
   };
 
   return (

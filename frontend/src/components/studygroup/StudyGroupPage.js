@@ -1,20 +1,10 @@
-import React, { useState } from "react";
-import StudyGroupForm from "./StudyGroupForm";
-import StudyGroupList from "./StudyGroupList";
+import React from "react";
 
 const StudyGroupPage = () => {
-  // A simple trigger to force reloading the list when a new group is created.
-  const [refresh, setRefresh] = useState(false);
-
-  const handleGroupCreated = () => {
-    // Toggle refresh state
-    setRefresh(!refresh);
-  };
-
   return (
     <div>
-      <StudyGroupForm onGroupCreated={handleGroupCreated} />
-      <StudyGroupList key={refresh} />
+      <h2>Study Groups</h2>
+      <p>This is where study groups will be listed.</p>
     </div>
   );
 };

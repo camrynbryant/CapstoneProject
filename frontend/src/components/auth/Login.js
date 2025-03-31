@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { loginUser } from "../../api/authService";
+import { useNavigate } from "react-router-dom";
+import "./Login.css";  
 
 const Login = () => {
   const {
@@ -9,12 +11,14 @@ const Login = () => {
     formState: { errors },
   } = useForm();
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     try {
       const response = await loginUser(data);
-      localStorage.setItem("token", response.token); 
-      alert("Login successful!");
+      localStorage.setItem("token", response.token);
+      console.log("Login successful, redirecting to study groups...");
+      navigate("/studygroups");
     } catch (error) {
       setErrorMessage(error.message || "Login failed");
     }
