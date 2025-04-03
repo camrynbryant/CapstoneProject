@@ -14,7 +14,7 @@ const StudyGroupPage = () => {
     <div className="studygroup-container">
       <h2>Study Groups</h2>
       <StudyGroupForm onGroupCreated={handleGroupCreated} />
-      <StudyGroupList refresh={refresh} />
+      <StudyGroupList refresh={refresh} showDetailLinks={true} />
     </div>
   );
 };

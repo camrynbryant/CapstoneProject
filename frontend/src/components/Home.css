@@ -1,4 +1,3 @@
-
 .home-page {
     font-family: Arial, sans-serif;
 }
@@ -6,12 +5,14 @@
 .hero-section {
     position: relative;
     width: 100%;
-    height: 70vh; 
+    height: 100vh; /* Changed from 70vh to 100vh */
+    /* Using the local image path provided by user */
     background: url("/images/virtual-learning.jpg") center/cover no-repeat;
+    /* Fallback background color if image fails to load */
+    background-color: #4F46E5;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 60px; 
 }
 
 .hero-overlay {
@@ -28,35 +29,38 @@
     color: #fff;
     text-align: center;
     z-index: 1;
-    padding: 0 20px;
-}
-
-.hero-header {
-    margin-bottom: 1rem;
+    padding: 1rem 2rem;
+    max-width: 800px;
 }
 
 .hero-content h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+    font-size: 3rem;
+    font-weight: bold;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
 }
 
 .hero-content p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
+    font-size: 1.25rem;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
 }
 
 .cta-button {
-    background-color: #f57c00;
+    background-color: #f59e0b;
     color: #fff;
     border: none;
-    padding: 15px 30px;
-    font-size: 1rem;
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
     cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .cta-button:hover {
-    background-color: #ff9800;
+    background-color: #d97706;
+    transform: scale(1.05);
 }
-

@@ -1,101 +1,238 @@
 .studygroup-container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: #fdfdfd;
-    border: 1px solid #e2e2e2;
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem 2rem;
+  font-family: sans-serif;
+}
+
+.studygroup-container > h2 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+.studygroup-container form {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border: 1px solid #dee2e6;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
-  }
-  
-  .studygroup-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .studygroup-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 30px;
-  }
-  
-  .studygroup-form input[type="text"],
-  .studygroup-form textarea {
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.studygroup-container form h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #495057;
+}
+
+.studygroup-container form input[type="text"],
+.studygroup-container form textarea {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ced4da;
     border-radius: 4px;
     font-size: 1rem;
     box-sizing: border-box;
-  }
-  
-  .studygroup-form textarea {
-    resize: vertical;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.studygroup-container form input[type="text"]:focus,
+.studygroup-container form textarea:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+
+.studygroup-container form textarea {
     min-height: 80px;
-  }
-  
-  .studygroup-form button {
-    background-color: #f57c00;
-    color: #fff;
-    padding: 12px;
+    resize: vertical;
+}
+
+.studygroup-container form p {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: -0.75rem;
+    margin-bottom: 1rem;
+}
+
+
+.studygroup-container form button[type="submit"] {
+    display: block;
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    padding: 0.75rem;
     border: none;
     border-radius: 4px;
     font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .studygroup-form button:hover {
-    background-color: #ff9800;
-  }
-  
-  .studygroup-list ul {
+    transition: background-color 0.2s ease-in-out;
+    margin-top: 0.5rem;
+}
+
+.studygroup-container form button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.studygroup-container ul {
     list-style: none;
     padding: 0;
     margin: 0;
-  }
-  
-  .studygroup-list li {
-    border: 1px solid #ddd;
-    padding: 15px;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    background-color: #fff;
-  }
-  
-  .studygroup-list li h4 {
-    margin: 0 0 10px;
-    color: #333;
-  }
-  
-  .studygroup-list li p {
-    margin: 5px 0;
-    color: #555;
-  }
-  
-  .studygroup-list li button {
-    background-color: #f57c00;
-    color: #fff;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    margin-right: 10px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .studygroup-list li button:hover {
-    background-color: #ff9800;
-  }
-  
-  .studygroup-list li .delete-button {
-    background-color: #f44336;
-  }
-
-  .studygroup-list li .delete-button:hover { 
-    background-color: #d32f2f; 
 }
+
+.studygroup-container ul h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #495057;
+    border-top: 1px solid #dee2e6;
+    padding-top: 2rem;
+}
+
+.studygroup-container ul li {
+    background-color: #fff;
+    border: 1px solid #e2e6ea;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.studygroup-container ul li:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+
+.studygroup-container ul li h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: #343a40;
+}
+
+.studygroup-container ul li p {
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+.studygroup-container ul li p strong {
+    color: #495057;
+}
+
+.studygroup-container ul li div:last-child {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.studygroup-container ul li div:last-child button,
+.studygroup-container ul li div:last-child a {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s ease-in-out;
+    text-align: center;
+}
+
+.studygroup-container ul li button:nth-of-type(1) {
+    background-color: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+.studygroup-container ul li button:nth-of-type(1):hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.studygroup-container ul li button:nth-of-type(2) {
+    background-color: #ffc107;
+    color: #212529;
+    border-color: #ffc107;
+}
+.studygroup-container ul li button:nth-of-type(2):hover {
+    background-color: #e0a800;
+    border-color: #d39e00;
+}
+
+.studygroup-container ul li button:nth-of-type(3) {
+    background-color: #dc3545;
+    color: white;
+    border-color: #dc3545;
+}
+.studygroup-container ul li button:nth-of-type(3):hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.studygroup-container ul li a {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+.studygroup-container ul li a:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+    color: white;
+}
+
+.studygroup-container ul li div div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #f5c6cb;
+    background-color: #f8d7da;
+    border-radius: 4px;
+    width: 100%;
+    justify-content: center;
+}
+.studygroup-container ul li div div span {
+    color: #721c24;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+.studygroup-container ul li div div button:nth-of-type(1) {
+     background-color: #dc3545;
+     color: white;
+     border-color: #dc3545;
+}
+.studygroup-container ul li div div button:nth-of-type(1):hover {
+     background-color: #c82333;
+     border-color: #bd2130;
+}
+.studygroup-container ul li div div button:nth-of-type(2) {
+     background-color: #6c757d;
+     color: white;
+     border-color: #6c757d;
+}
+.studygroup-container ul li div div button:nth-of-type(2):hover {
+     background-color: #5a6268;
+     border-color: #545b62;
+}
+
+.studygroup-container > div > p:first-of-type {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+

@@ -5,15 +5,17 @@ const Logout = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); 
-    alert("You have been logged out successfully!");
-    navigate("/login"); 
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId"); 
+    navigate("/login");
   };
 
   return (
-    <div className="logout-container">
+    <div className="logout-container" style={{ padding: '20px', textAlign: 'center' }}>
       <h2>Logout</h2>
-      <button onClick={handleLogout}>Logout</button>
+      <button onClick={handleLogout} style={{ padding: '10px 20px', fontSize: '1rem', cursor: 'pointer' }}>
+        Logout
+      </button>
     </div>
   );
 };

@@ -11,8 +11,8 @@ public class StudyGroup {
     private String id;
     private String name;
     private String description;
-    private String owner; // The creator (president) of the group
-    private List<String> memberIds; // store user IDs
+    private String owner; 
+    private List<String> memberIds; 
 
     public StudyGroup() {}
 
@@ -23,7 +23,6 @@ public class StudyGroup {
         this.memberIds = memberIds;
     }
 
-    // Getters and setters
     public String getId() {
         return id;
     }
