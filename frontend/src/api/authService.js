@@ -31,7 +31,7 @@ export const loginUser = async (userData) => {
     const token = response.data.token;
     const decoded = jwtDecode.jwtDecode(token); 
     const userId = decoded.sub || decoded.email;
-    return { token, userId };
+    return { token, userId, email: decoded.email };
   } catch (error) {
     console.error("Error inside authService.loginUser:", error); 
     let message = "Login failed";
