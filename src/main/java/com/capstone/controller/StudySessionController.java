@@ -1,6 +1,8 @@
 package com.capstone.controller;
 
 import com.capstone.models.StudySession;
+import com.capstone.models.StudyGroup;
+import com.capstone.service.NotificationService;
 import com.capstone.repository.StudySessionRepository;
 import com.capstone.repository.StudyGroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,22 +27,39 @@ public class StudySessionController {
     @Autowired
     private StudyGroupRepository studyGroupRepository;
 
+    @Autowired
+    private NotificationService notificationService; 
+
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public StudySession createSession(@RequestBody StudySession session, @AuthenticationPrincipal String userEmail) {
         if (userEmail == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User email not available from token");
         }
+
         String groupId = session.getGroupId();
         if (groupId == null || groupId.trim().isEmpty()) {
              throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group ID is required to create a session");
         }
+
         boolean isMember = studyGroupRepository.existsByIdAndMemberIdsContaining(groupId, userEmail);
         if (!isMember) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You must be a member of this group to create a session.");
         }
+
         session.setCreatedBy(userEmail);
-        return sessionRepository.save(session);
+        StudySession savedSession = sessionRepository.save(session); 
+
+        StudyGroup group = studyGroupRepository.findById(groupId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Study group not found"));
+
+        List<String> memberIds = group.getMemberIds();
+        if (memberIds != null && !memberIds.isEmpty()) {
+            String message = "A new study session has been created in your group: " + group.getName();
+            notificationService.sendNotificationToUsers(memberIds, message);
+        }
+
+        return savedSession;
     }
 
     @GetMapping("/group/{groupId}")
