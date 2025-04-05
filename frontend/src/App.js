@@ -7,6 +7,8 @@ import Logout from "./components/auth/Logout";
 import StudyGroupPage from "./components/studygroup/StudyGroupPage";
 import StudyGroupDetailPage from "./components/studygroup/StudyGroupDetailPage";
 import "./App.css";
+import NotificationsPage from "./components/notifications/NotificationsPage";
+
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -25,13 +27,12 @@ function App() {
           {isAuthenticated ? (
             <>
               <li><Link to="/studygroups">Study Groups</Link></li>
-              {/* Removed className */}
+              <li><Link to="/notifications">Notifications</Link></li>
               <li><Link to="/logout">Logout</Link></li>
             </>
           ) : (
             <>
               <li><Link to="/register">Register</Link></li>
-              {/* Removed className */}
               <li><Link to="/login">Login</Link></li>
             </>
           )}
@@ -46,6 +47,7 @@ function App() {
           <Route path="/logout" element={<Logout />} />
           <Route path="/studygroups" element={<StudyGroupPage />} />
           <Route path="/studygroups/:groupId" element={<StudyGroupDetailPage />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
         </Routes>
       </div>
     </div>
