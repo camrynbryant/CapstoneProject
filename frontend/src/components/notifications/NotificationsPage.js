@@ -7,11 +7,9 @@ const NotificationsPage = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [loadingSettings, setLoadingSettings] = useState(true);
   
-  // Retrieve userEmail and token from localStorage
   const userId = localStorage.getItem("userEmail");
   const token = localStorage.getItem("token");
 
-  // Fetch user settings (including notification preference) on mount
   useEffect(() => {
     if (!userId) return;
     axios.get(`http://localhost:8080/api/users/${userId}`, {
@@ -27,7 +25,6 @@ const NotificationsPage = () => {
     });
   }, [userId, token]);
 
-  // Fetch notifications only if notifications are enabled
   useEffect(() => {
     if (!userId || !notificationsEnabled) return;
     axios
@@ -40,7 +37,6 @@ const NotificationsPage = () => {
       .catch((err) => console.error("Error fetching notifications:", err));
   }, [userId, token, notificationsEnabled]);
 
-  // Toggle notifications setting handler
   const toggleNotifications = () => {
     axios
       .put(
@@ -64,7 +60,6 @@ const NotificationsPage = () => {
               console.error("Error fetching notifications:", err)
             );
         } else {
-          // When disabling, clear notifications immediately
           setNotifications([]);
         }
       })
