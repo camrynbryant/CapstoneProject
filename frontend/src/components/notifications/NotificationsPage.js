@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./NotificationsPage.css";
+import { markNotificationAsRead } from "../../api/notificationService";
+
 
 const NotificationsPage = () => {
   const [notifications, setNotifications] = useState([]);
@@ -48,7 +50,6 @@ const NotificationsPage = () => {
         const newSetting = res.data.notificationsEnabled;
         setNotificationsEnabled(newSetting);
         if (newSetting) {
-          // When re-enabling, fetch notifications
           axios
             .get(`http://localhost:8080/api/notifications/${userId}`, {
               headers: { Authorization: `Bearer ${token}` },
@@ -67,6 +68,29 @@ const NotificationsPage = () => {
         console.error("Error updating notification settings:", err)
       );
   };
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/api/notifications/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => setNotifications(res.data))
+      .catch((err) => console.error("Error fetching notifications:", err));
+  }, [userId, token]);
+
+  const markAsRead = (notificationId) => {
+    markNotificationAsRead(notificationId, token)
+      .then((updatedNotification) => {
+        setNotifications((prev) =>
+          prev.map((n) =>
+            n.id === notificationId ? updatedNotification : n
+          )
+        );
+      })
+      .catch((err) => console.error("Error marking notification as read:", err));
+  };
+
+  
 
   return (
     <div className="notifications-page">
@@ -87,12 +111,23 @@ const NotificationsPage = () => {
             <p>No notifications yet.</p>
           ) : (
             notifications.map((notification) => (
-              <div key={notification.id} className="notification-card unread">
-                <h3>New Study Session</h3>
+              <div
+                key={notification.id}
+                className={`notification-card ${notification.read ? "read" : "unread"}`}
+              >
+                <h3>New Alert!</h3>
                 <p>{notification.message}</p>
                 <span className="timestamp">
                   {new Date(notification.createdAt).toLocaleString()}
                 </span>
+                {!notification.read && (
+                  <button
+                    className="mark-read-button"
+                    onClick={() => markAsRead(notification.id)}
+                  >
+                    Mark as read
+                  </button>
+                )}
               </div>
             ))
           )
