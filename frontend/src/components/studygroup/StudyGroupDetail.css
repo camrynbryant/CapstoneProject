@@ -3,44 +3,263 @@
     margin: 2rem auto;
     padding: 1rem 2rem;
     font-family: sans-serif;
-  }
-  
-  .group-info-card {
+    background-color: #f8f9fa;
+}
+
+.group-info-card {
     background-color: #fff;
     border: 1px solid #e2e6ea;
     border-radius: 8px;
     padding: 1.5rem;
     margin-bottom: 2rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  }
-  
-  .group-info-card h2 {
+}
+
+.group-info-card h2 {
     font-size: 1.75rem;
     font-weight: 600;
     margin-top: 0;
     margin-bottom: 0.75rem;
     color: #343a40;
-  }
-  
-  .group-info-card p {
+}
+
+.group-info-card p {
     font-size: 1rem;
     color: #6c757d;
     margin-bottom: 0.5rem;
     line-height: 1.5;
-  }
-  
-  .group-info-card p strong {
+}
+
+.group-info-card p strong {
     color: #495057;
-  }
-  
-  .study-group-detail-page hr {
+}
+
+.study-group-detail-page hr {
     border: 0;
     height: 1px;
     background-color: #e2e6ea;
-    margin: 2rem 0;
-  }
-  
-  .session-form {
+    margin: 2.5rem 0;
+}
+
+.study-resources-container {
+    background-color: #fff;
+    border: 1px solid #e2e6ea;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.study-resources-section h4 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #343a40;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 0.75rem;
+}
+
+.upload-form {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+}
+
+.upload-form h5 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #495057;
+}
+
+.upload-form input[type="file"] {
+    display: block;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: #495057;
+    border: 1px solid #ced4da;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.upload-form input[type="file"]::file-selector-button {
+    padding: 0.4rem 0.9rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid #007bff;
+    background-color: #007bff;
+    color: white;
+    transition: all 0.2s ease-in-out;
+    margin-right: 0.75rem;
+}
+
+.upload-form input[type="file"]::file-selector-button:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.upload-form button {
+    display: inline-block;
+    width: auto;
+    background-color: #17a2b8;
+    color: white;
+    font-weight: bold;
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.upload-form button:hover {
+    background-color: #117a8b;
+}
+
+.upload-form button:disabled {
+    background-color: #adb5bd;
+    cursor: not-allowed;
+}
+
+.upload-form .error-message,
+.upload-form .success-message {
+    font-size: 0.875rem;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border: 1px solid;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.upload-form .error-message {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.upload-form .success-message {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.file-list {
+    margin-top: 2rem;
+}
+
+.file-list h5 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #495057;
+    border-top: 1px solid #eee;
+    padding-top: 1.5rem;
+}
+
+.file-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.file-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0.75rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid #e2e6ea;
+    border-radius: 6px;
+    background-color: #fff;
+    transition: background-color 0.2s ease;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.file-list li:hover {
+    background-color: #f8f9fa;
+}
+
+.file-list li span {
+    font-size: 0.95rem;
+    color: #495057;
+    flex-grow: 1;
+    margin-right: 1rem;
+    word-break: break-word;
+    min-width: 200px;
+}
+
+.file-list button.download-button,
+.file-list button.delete-button {
+    padding: 0.4rem 0.9rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+}
+
+.file-list button.download-button {
+    border-color: #28a745;
+    background-color: #28a745;
+    color: white;
+}
+
+.file-list button.download-button:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.file-list button.delete-button {
+    border-color: #dc3545;
+    background-color: #dc3545;
+    color: white;
+}
+
+.file-list button.delete-button:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.file-list .error-message,
+.file-list .success-message {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border: 1px solid;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.file-list .success-message {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.file-list p {
+    font-style: italic;
+    color: #6c757d;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.session-form {
     background-color: #f8f9fa;
     padding: 1.5rem;
     border: 1px solid #dee2e6;
@@ -48,217 +267,228 @@
     margin-top: 2rem;
     margin-bottom: 2rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  }
-  
-  .session-form h3 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-top: 0;
-      margin-bottom: 1.5rem;
-      color: #495057;
-  }
-  
-  .session-form label {
-      display: block;
-      margin-bottom: 0.3rem;
-      font-weight: 500;
-      color: #495057;
-      font-size: 0.9rem;
-  }
-  
-  .session-form input[type="text"],
-  .session-form input[type="datetime-local"],
-  .session-form textarea {
-      width: 100%;
-      padding: 0.75rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ced4da;
-      border-radius: 4px;
-      font-size: 1rem;
-      box-sizing: border-box;
-      transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  }
-  
-  .session-form input[type="text"]:focus,
-  .session-form input[type="datetime-local"]:focus,
-  .session-form textarea:focus {
-      border-color: #80bdff;
-      outline: 0;
-      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  }
-  
-  .session-form textarea {
-      min-height: 80px;
-      resize: vertical;
-  }
-  
-  .session-form button[type="submit"] {
-      display: inline-block;
-      width: auto;
-      background-color: #28a745;
-      color: white;
-      font-weight: bold;
-      padding: 0.6rem 1.5rem;
-      border: none;
-      border-radius: 4px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.2s ease-in-out;
-      margin-top: 0.5rem;
-  }
-  
-  .session-form button[type="submit"]:hover {
-      background-color: #218838;
-  }
-  
-  .session-form p {
-      color: #dc3545;
-      font-size: 0.875rem;
-      margin-top: 1rem;
-      padding: 0.75rem;
-      border: 1px solid #dc3545;
-      border-radius: 4px;
-      background-color: #f8d7da;
-  }
-  .session-form p.feedback-success {
-       color: #155724;
-       border-color: #c3e6cb;
-       background-color: #d4edda;
-  }
-  
-  .session-list {
-      margin-top: 2rem;
-  }
-  
-  .session-list h3 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-      color: #495057;
-      border-top: 1px solid #dee2e6;
-      padding-top: 2rem;
-  }
-  
-  .session-list ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-  }
-  
-  .session-item-card {
-      background-color: #fff;
-      border: 1px solid #e2e6ea;
-      border-radius: 8px;
-      padding: 1.25rem;
-      margin-bottom: 1rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      transition: box-shadow 0.2s ease-in-out;
-  }
-  .session-item-card:hover {
-       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
-  
-  .session-item-card.editing {
-      border-color: #007bff;
-      background-color: #f8f9fa;
-  }
-  
-  .session-item-card h4 {
-      font-size: 1.35rem;
-      font-weight: 600;
-      margin-top: 0;
-      margin-bottom: 0.5rem;
-      color: #343a40;
-  }
-  
-  .session-item-card p {
-      font-size: 1rem;
-      color: #495057;
-      margin-bottom: 0.6rem;
-      line-height: 1.5;
-  }
-  .session-item-card p strong {
-      color: #343a40;
-      margin-right: 0.25em;
-  }
-  .session-item-card p small {
-      font-size: 0.9em;
-      color: #6c757d;
-  }
-  
-  .session-item-card div:last-child {
-      margin-top: 1.25rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      align-items: center;
-      justify-content: center;
-  }
-  
-  .session-item-card div:last-child button,
-  .session-item-card div:last-child a {
-      padding: 0.4rem 0.9rem;
-      font-size: 0.9rem;
-      font-weight: 500;
-      border-radius: 4px;
-      text-decoration: none;
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: all 0.2s ease-in-out;
-      text-align: center;
-  }
-  
-  .session-item-card button.join-btn { background-color: #28a745; color: white; border-color: #28a745; }
-  .session-item-card button.join-btn:hover { background-color: #218838; border-color: #1e7e34; }
-  
-  .session-item-card button.leave-btn { background-color: #ffc107; color: #212529; border-color: #ffc107; }
-  .session-item-card button.leave-btn:hover { background-color: #e0a800; border-color: #d39e00; }
-  
-  .session-item-card button.edit-btn { background-color: #007bff; color: white; border-color: #007bff; }
-  .session-item-card button.edit-btn:hover { background-color: #0056b3; border-color: #0056b3; }
-  
-  .session-item-card button.delete-btn { background-color: #dc3545; color: white; border-color: #dc3545; }
-  .session-item-card button.delete-btn:hover { background-color: #c82333; border-color: #bd2130; }
-  
-  .session-item-card form { margin-top: 1rem; }
-  .session-item-card form label { display: block; margin-bottom: 0.25rem; font-size: 0.9rem; }
-  .session-item-card form input, .session-item-card form textarea { width: 100%; margin-bottom: 0.75rem; padding: 0.5rem; font-size: 0.95rem; border: 1px solid #ccc; border-radius: 4px; }
-  .session-item-card form textarea { min-height: 60px; }
-  .session-item-card form button[type="submit"] { background-color: #28a745; color: white; }
-  .session-item-card form button[type="submit"]:hover { background-color: #218838; }
-  .session-item-card form button[type="button"] { background-color: #6c757d; color: white; }
-  .session-item-card form button[type="button"]:hover { background-color: #5a6268; }
-  .session-item-card form p {
-      color: #721c24; background-color: #f8d7da; border-color: #f5c6cb;
-      font-size: 0.875rem; margin-top: 0.5rem; padding: 0.5rem; border: 1px solid; border-radius: 4px;
-  }
-  
-  .session-item-card div.delete-confirm {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem;
-      border: 1px solid #f5c6cb;
-      background-color: #f8d7da;
-      border-radius: 4px;
-      width: auto;
-      display: inline-flex;
-      justify-content: center;
-  }
-  .session-item-card div.delete-confirm span { color: #721c24; font-weight: bold; font-size: 0.9rem; }
-  .session-item-card div.delete-confirm button:nth-of-type(1) { background-color: #dc3545; color: white; border-color: #dc3545; }
-  .session-item-card div.delete-confirm button:nth-of-type(1):hover { background-color: #c82333; border-color: #bd2130; }
-  .session-item-card div.delete-confirm button:nth-of-type(2) { background-color: #6c757d; color: white; border-color: #6c757d; }
-  .session-item-card div.delete-confirm button:nth-of-type(2):hover { background-color: #5a6268; border-color: #545b62; }
-  
-  .session-list > p {
-      padding: 0.75rem 1.25rem;
-      margin-bottom: 1rem;
-      border: 1px solid transparent;
-      border-radius: 0.25rem;
-  }
-  .session-list > p.feedback-error { color: #721c24; background-color: #f8d7da; border-color: #f5c6cb; }
-  .session-list > p.feedback-success { color: #155724; background-color: #d4edda; border-color: #c3e6cb; }
-  .session-list > p.feedback-info { color: #004085; background-color: #cce5ff; border-color: #b8daff; }
-  
-  
+}
+
+.session-form h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #495057;
+}
+
+.session-form label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+.session-form input[type="text"],
+.session-form input[type="datetime-local"],
+.session-form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.session-form input[type="text"]:focus,
+.session-form input[type="datetime-local"]:focus,
+.session-form textarea:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.session-form textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.session-form button[type="submit"] {
+    display: inline-block;
+    width: auto;
+    background-color: #28a745;
+    color: white;
+    font-weight: bold;
+    padding: 0.6rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    margin-top: 0.5rem;
+}
+
+.session-form button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+.session-form p {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border: 1px solid #dc3545;
+    border-radius: 4px;
+    background-color: #f8d7da;
+}
+
+.session-form p.feedback-success {
+    color: #155724;
+    border-color: #c3e6cb;
+    background-color: #d4edda;
+}
+
+.session-list {
+    margin-top: 2rem;
+}
+
+.session-list h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #495057;
+    border-top: 1px solid #dee2e6;
+    padding-top: 2rem;
+}
+
+.session-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.session-item-card {
+    background-color: #fff;
+    border: 1px solid #e2e6ea;
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.session-item-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.session-item-card.editing {
+    border-color: #007bff;
+    background-color: #f8f9fa;
+}
+
+.session-item-card h4 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: #343a40;
+}
+
+.session-item-card p {
+    font-size: 1rem;
+    color: #495057;
+    margin-bottom: 0.6rem;
+    line-height: 1.5;
+}
+
+.session-item-card p strong {
+    color: #343a40;
+    margin-right: 0.25em;
+}
+
+.session-item-card p small {
+    font-size: 0.9em;
+    color: #6c757d;
+}
+
+.session-item-card div:last-child {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    align-items: center;
+}
+
+.session-item-card div:last-child button,
+.session-item-card div:last-child a {
+    padding: 0.4rem 0.9rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s ease-in-out;
+    text-align: center;
+}
+
+.session-item-card button.join-btn { background-color: #28a745; color: white; border-color: #28a745; }
+.session-item-card button.join-btn:hover { background-color: #218838; border-color: #1e7e34; }
+
+.session-item-card button.leave-btn { background-color: #ffc107; color: #212529; border-color: #ffc107; }
+.session-item-card button.leave-btn:hover { background-color: #e0a800; border-color: #d39e00; }
+
+.session-item-card button.edit-btn { background-color: #007bff; color: white; border-color: #007bff; }
+.session-item-card button.edit-btn:hover { background-color: #0056b3; border-color: #0056b3; }
+
+.session-item-card button.delete-btn { background-color: #dc3545; color: white; border-color: #dc3545; }
+.session-item-card button.delete-btn:hover { background-color: #c82333; border-color: #bd2130; }
+
+.session-item-card form { margin-top: 1rem; }
+.session-item-card form label { display: block; margin-bottom: 0.25rem; font-size: 0.9rem; }
+.session-item-card form input, .session-item-card form textarea { width: 100%; margin-bottom: 0.75rem; padding: 0.5rem; font-size: 0.95rem; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+.session-item-card form textarea { min-height: 60px; }
+.session-item-card form button[type="submit"] { background-color: #28a745; color: white; }
+.session-item-card form button[type="submit"]:hover { background-color: #218838; }
+.session-item-card form button[type="button"] { background-color: #6c757d; color: white; }
+.session-item-card form button[type="button"]:hover { background-color: #5a6268; }
+.session-item-card form p {
+    color: #721c24; background-color: #f8d7da; border-color: #f5c6cb;
+    font-size: 0.875rem; margin-top: 0.5rem; padding: 0.5rem; border: 1px solid; border-radius: 4px;
+}
+
+.session-item-card div.delete-confirm {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #f5c6cb;
+    background-color: #f8d7da;
+    border-radius: 4px;
+    width: auto;
+    display: inline-flex;
+    justify-content: flex-start;
+    margin-top: 0;
+}
+.session-item-card div.delete-confirm span { color: #721c24; font-weight: bold; font-size: 0.9rem; }
+.session-item-card div.delete-confirm button:nth-of-type(1) { background-color: #dc3545; color: white; border-color: #dc3545; }
+.session-item-card div.delete-confirm button:nth-of-type(1):hover { background-color: #c82333; border-color: #bd2130; }
+.session-item-card div.delete-confirm button:nth-of-type(2) { background-color: #6c757d; color: white; border-color: #6c757d; }
+.session-item-card div.delete-confirm button:nth-of-type(2):hover { background-color: #5a6268; border-color: #545b62; }
+
+.session-list > p {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+.session-list > p.feedback-error { color: #721c24; background-color: #f8d7da; border-color: #f5c6cb; }
+.session-list > p.feedback-success { color: #155724; background-color: #d4edda; border-color: #c3e6cb; }
+.session-list > p.feedback-info { color: #004085; background-color: #cce5ff; border-color: #b8daff; }
+
+.study-group-detail-page > p[style*="font-style: italic"] {
+    text-align: center;
+    color: #6c757d;
+    background-color: #e9ecef;
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px dashed #ced4da;
+}
