@@ -1,33 +1,47 @@
 import React, { useState, useEffect } from "react";
 import { Route, Routes, Link, useLocation } from "react-router-dom";
+import { getUnreadCount } from "./api/notificationService";
 import Home from "./components/Home";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import Logout from "./components/auth/Logout";
 import StudyGroupPage from "./components/studygroup/StudyGroupPage";
 import StudyGroupDetailPage from "./components/studygroup/StudyGroupDetailPage";
-import "./App.css";
 import NotificationsPage from "./components/notifications/NotificationsPage";
-
+import NotificationListener from "./components/notifications/NotificationListener"; 
+import "./App.css";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const location = useLocation();
 
-  useEffect(() => {
     const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userEmail");
+
+  useEffect(() => {
     setIsAuthenticated(!!token);
-  }, [location]);
+
+    if (token && userId) {
+      getUnreadCount(userId, token).then(setUnreadCount).catch(console.error);
+    }
+  }, [location, token, userId]);
 
   return (
     <div className="App">
+            {/*Notifications*/}
+            <NotificationListener userId={userId} token={token} />
       <nav className="app-nav">
         <ul>
           <li><Link to="/">Home</Link></li>
           {isAuthenticated ? (
             <>
               <li><Link to="/studygroups">Study Groups</Link></li>
-              <li><Link to="/notifications">Notifications</Link></li>
+              <li>
+                <Link to="/notifications">
+                  Notifications ({unreadCount})
+                </Link>
+              </li>
               <li><Link to="/logout">Logout</Link></li>
             </>
           ) : (
