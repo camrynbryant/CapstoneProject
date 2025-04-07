@@ -1,8 +1,7 @@
-/* === Existing App Styles === */
 .App {
   text-align: center;
   font-family: sans-serif;
-  background-color: #f4f7f6; /* Light gray background for the whole app */
+  background-color: #f4f7f6;
   min-height: 100vh;
 }
 
@@ -58,11 +57,10 @@ nav.app-nav ul li a.nav-button-login:hover {
   border-bottom: none;
 }
 
-/* === NEW Auth Container Styles === */
 .auth-container {
-  max-width: 450px; /* Slightly wider */
-  margin: 4rem auto; /* More top margin */
-  padding: 2rem 2.5rem; /* More padding */
+  max-width: 450px;
+  margin: 4rem auto;
+  padding: 2rem 2.5rem;
   background-color: #fff;
   border: 1px solid #e2e6ea;
   border-radius: 8px;
@@ -71,22 +69,22 @@ nav.app-nav ul li a.nav-button-login:hover {
 
 .auth-container h2 {
   text-align: center;
-  margin-bottom: 1.5rem; /* More space below heading */
+  margin-bottom: 1.5rem;
   color: #343a40;
-  font-size: 1.75rem; /* Larger heading */
+  font-size: 1.75rem;
   font-weight: 600;
 }
 
 .auth-container form {
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* Consistent gap */
+  gap: 1rem;
 }
 
 .auth-container label {
   display: block;
-  margin-bottom: 0.25rem; /* Smaller gap below label */
-  font-weight: 500; /* Medium weight */
+  margin-bottom: 0.25rem;
+  font-weight: 500;
   color: #495057;
   font-size: 0.9rem;
   text-align: left;
@@ -112,17 +110,15 @@ nav.app-nav ul li a.nav-button-login:hover {
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-/* Error message styling */
 .auth-container .error {
   color: #dc3545;
   font-size: 0.875rem;
-  margin-top: 0.25rem; /* Space above error */
+  margin-top: 0.25rem;
   text-align: left;
 }
 
-/* General feedback message (e.g., login failed) */
 .auth-container > p.error {
-    margin-bottom: 1rem; /* Space below general error */
+    margin-bottom: 1rem;
     padding: 0.75rem;
     border: 1px solid #f5c6cb;
     background-color: #f8d7da;
@@ -133,7 +129,7 @@ nav.app-nav ul li a.nav-button-login:hover {
 
 
 .auth-container button[type="submit"] {
-  background-color: #007bff; /* Consistent blue */
+  background-color: #007bff;
   color: #fff;
   font-weight: bold;
   padding: 0.75rem;
@@ -142,17 +138,16 @@ nav.app-nav ul li a.nav-button-login:hover {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 1rem; /* Space above button */
+  margin-top: 1rem;
 }
 
 .auth-container button[type="submit"]:hover {
-  background-color: #0056b3; /* Darker blue */
+  background-color: #0056b3;
 }
 
-/* === Other App Styles === */
 .App-logo { height: 40vmin; pointer-events: none; }
 @media (prefers-reduced-motion: no-preference) { .App-logo { animation: App-logo-spin infinite 20s linear; } }
 .App-header { background-color: #282c34; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: calc(10px + 2vmin); color: white; }
 .App-link { color: #61dafb; }
 @keyframes App-logo-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
+ 
