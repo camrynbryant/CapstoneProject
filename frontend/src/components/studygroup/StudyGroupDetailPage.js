@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { getStudyGroupById } from "../../api/studyGroupService";
 import fileService from "../../api/fileService";
 import SessionForm from "../sessions/SessionForm";
@@ -263,6 +263,13 @@ const StudyGroupDetailPage = () => {
             <>
               <div className="study-resources-container">
                 <StudyResources groupId={groupId} />
+              </div>
+              <div style={{ marginTop: '1rem' }}>
+                <Link to={`/groups/${groupId}/chat`}>
+                  <button className="chat-button">
+                    Open Group Chat
+                  </button>
+                </Link>
               </div>
 
               <hr />

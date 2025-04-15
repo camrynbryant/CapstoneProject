@@ -25,13 +25,22 @@ export const registerUser = async (userData) => {
 export const loginUser = async (userData) => {
   try {
     const response = await axios.post(`${API_URL}/login`, userData);
-    if (!response.data?.token) {
-        throw new Error("Login response did not include a token.");
+    const { token, userId, email } = response.data;
+
+    if (!token || typeof token !== "string") {
+      throw new Error("Invalid token received from server");
     }
-    const token = response.data.token;
-    const decoded = jwtDecode.jwtDecode(token); 
-    const userId = decoded.sub || decoded.email;
-    return { token, userId, email: decoded.email };
+
+    const decoded = jwtDecode.jwtDecode(token);
+
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify({
+      userId,
+      email,
+      name: decoded.name || "", 
+    }));
+
+    return { token, userId, email };
   } catch (error) {
     console.error("Error inside authService.loginUser:", error); 
     let message = "Login failed";

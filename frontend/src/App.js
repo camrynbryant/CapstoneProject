@@ -9,6 +9,7 @@ import StudyGroupPage from "./components/studygroup/StudyGroupPage";
 import StudyGroupDetailPage from "./components/studygroup/StudyGroupDetailPage";
 import NotificationsPage from "./components/notifications/NotificationsPage";
 import NotificationListener from "./components/notifications/NotificationListener"; 
+import GroupChat from "./components/chat/GroupChat";
 import "./App.css";
 
 function App() {
@@ -29,7 +30,6 @@ function App() {
 
   return (
     <div className="App">
-            {/*Notifications*/}
             <NotificationListener userId={userId} token={token} />
       <nav className="app-nav">
         <ul>
@@ -62,6 +62,7 @@ function App() {
           <Route path="/studygroups" element={<StudyGroupPage />} />
           <Route path="/studygroups/:groupId" element={<StudyGroupDetailPage />} />
           <Route path="/notifications" element={<NotificationsPage />} />
+          <Route path="/groups/:groupId/chat" element={<GroupChat />} />
         </Routes>
       </div>
     </div>

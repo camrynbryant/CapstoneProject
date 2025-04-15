@@ -37,10 +37,12 @@ export const deleteStudyGroup = async (id) => {
   return await axios.delete(`${API_URL}/${id}`, getAuthHeader());
 };
 
-export default {
+const studyGroupService = {
     createStudyGroup,
     getAllStudyGroups,
     getStudyGroupById, 
     updateStudyGroup,
     deleteStudyGroup
 };
+
+export default studyGroupService;

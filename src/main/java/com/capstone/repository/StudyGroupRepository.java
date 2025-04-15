@@ -12,5 +12,5 @@ public interface StudyGroupRepository extends MongoRepository<StudyGroup, String
     
     List<StudyGroup> findByDescriptionContainingIgnoreCase(String keyword);
     
-    boolean existsByIdAndMemberIdsContaining(String groupId, String memberId);
+    boolean existsByIdAndMemberIdsContaining(String groupId, String memberEmail);
 }

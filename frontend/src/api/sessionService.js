@@ -4,13 +4,12 @@ const API_URL = "http://localhost:8080/api/sessions";
 
 const getAuthHeader = () => {
   const token = localStorage.getItem("token");
-  const headers = {
-    "Content-Type": "application/json",
+  return {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : undefined,
+    }
   };
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
-  }
-  return { headers };
 };
 
 export const createSession = (sessionData) => {
@@ -30,16 +29,14 @@ export const deleteSession = (id) => {
 };
 
 export const joinSession = (id, userId) => {
-
   return axios.put(`${API_URL}/${id}/join?userId=${userId}`, {}, getAuthHeader());
 };
 
 export const leaveSession = (id, userId) => {
-
-    return axios.put(`${API_URL}/${id}/leave?userId=${userId}`, {}, getAuthHeader());
+  return axios.put(`${API_URL}/${id}/leave?userId=${userId}`, {}, getAuthHeader());
 };
 
-export default {
+const sessionService = {
   createSession,
   getSessionsByGroup,
   updateSession,
@@ -47,3 +44,5 @@ export default {
   joinSession,
   leaveSession,
 };
+
+export default sessionService;

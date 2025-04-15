@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-// Removed UserDetails import
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -37,8 +37,8 @@ public class StudySessionController {
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    // Changed back to String userEmail
-    public StudySession createSession(@RequestBody StudySession session, @AuthenticationPrincipal String userEmail) {
+    public StudySession createSession(@RequestBody StudySession session, @AuthenticationPrincipal UserDetails userDetails) {
+        String userEmail = userDetails.getUsername();
         if (userEmail == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User email not available from token");
         }
@@ -72,9 +72,9 @@ public class StudySessionController {
 
     @GetMapping("/group/{groupId}")
     @PreAuthorize("isAuthenticated()")
-     // Changed back to String userEmail
-    public List<StudySession> getSessionsByGroup(@PathVariable String groupId, @AuthenticationPrincipal String userEmail) {
-         if (userEmail == null) {
+    public List<StudySession> getSessionsByGroup(@PathVariable String groupId, @AuthenticationPrincipal UserDetails userDetails) {
+        String userEmail = userDetails.getUsername();
+        if (userEmail == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User email not available from token");
         }
         boolean isMember = studyGroupRepository.existsByIdAndMemberIdsContaining(groupId, userEmail);
@@ -86,9 +86,9 @@ public class StudySessionController {
 
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
-     // Changed back to String userEmail
-    public StudySession updateSession(@PathVariable String id, @RequestBody StudySession updatedSession, @AuthenticationPrincipal String userEmail) {
-         if (userEmail == null) {
+    public StudySession updateSession(@PathVariable String id, @RequestBody StudySession updatedSession, @AuthenticationPrincipal UserDetails userDetails) {
+        String userEmail = userDetails.getUsername();
+        if (userEmail == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User email not available from token");
         }
         return sessionRepository.findById(id).map(session -> {
@@ -107,8 +107,8 @@ public class StudySessionController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
-     // Changed back to String userEmail
-    public void deleteSession(@PathVariable String id, @AuthenticationPrincipal String userEmail) {
+    public void deleteSession(@PathVariable String id, @AuthenticationPrincipal UserDetails userDetails) {
+        String userEmail = userDetails.getUsername();
         StudySession session = sessionRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Study session not found"));
         if (userEmail == null) {
@@ -127,9 +127,9 @@ public class StudySessionController {
 
     @PutMapping("/{id}/join")
     @PreAuthorize("isAuthenticated()")
-     // Changed back to String userEmail
-    public StudySession joinSession(@PathVariable String id, @RequestParam String userId, @AuthenticationPrincipal String userEmail) {
-         if (userEmail == null) {
+    public StudySession joinSession(@PathVariable String id, @RequestParam String userId, @AuthenticationPrincipal UserDetails userDetails) {
+        String userEmail = userDetails.getUsername();
+        if (userEmail == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User email not available from token");
         }
         if (!userId.equals(userEmail)) {
@@ -152,8 +152,8 @@ public class StudySessionController {
 
     @PutMapping("/{id}/leave")
     @PreAuthorize("isAuthenticated()")
-     // Changed back to String userEmail
-    public StudySession leaveSession(@PathVariable String id, @RequestParam String userId, @AuthenticationPrincipal String userEmail) {
+    public StudySession leaveSession(@PathVariable String id, @RequestParam String userId, @AuthenticationPrincipal UserDetails userDetails) {
+        String userEmail = userDetails.getUsername();
         if (userEmail == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User email not available from token");
         }

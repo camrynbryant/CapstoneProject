@@ -17,6 +17,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Base64;
 
 @Service
 public class UserService {
@@ -42,7 +43,11 @@ public class UserService {
             return ResponseEntity.status(401).body("Invalid email or password");
         }
         String token = generateToken(user);
-        return ResponseEntity.ok(Map.of("token", token, "message", "Login successful"));
+        return ResponseEntity.ok(Map.of(
+            "token", token,
+            "email", user.getEmail(),
+            "userId", user.getEmail()
+        ));
     }
 
     public ResponseEntity<?> registerUser(String name, String email, String password) {
@@ -64,7 +69,7 @@ public class UserService {
     }
 
     private Key getSigningKey() {
-        byte[] keyBytes = this.jwtSecret.getBytes(StandardCharsets.UTF_8);
+        byte[] keyBytes = java.util.Base64.getDecoder().decode(jwtSecret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

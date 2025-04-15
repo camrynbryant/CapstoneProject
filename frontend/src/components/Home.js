@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
+import heroImage from '../assets/virtual-learning-illustration.jpg';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -9,9 +10,13 @@ const Home = () => {
     navigate("/studygroups");
   };
 
+  const heroStyle = {
+    backgroundImage: `url(${heroImage})`
+  };
+
   return (
     <div className="home-page">
-      <section className="hero-section">
+      <section className="hero-section" style={heroStyle}>
         <div className="hero-overlay"></div>
         <div className="hero-content">
           <header className="hero-header">

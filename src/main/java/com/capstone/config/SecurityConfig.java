@@ -28,10 +28,12 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/notifications/**").authenticated()
-                .requestMatchers("/api/register", "/api/login").permitAll() 
-                .requestMatchers(HttpMethod.GET, "/api/studygroups/all").permitAll() 
-                .requestMatchers("/api/studygroups/**", "/api/files/**", "/api/notifications/**", "/api/users/**", "/api/sessions/**").authenticated()
+                .requestMatchers("/ws/**", "/ws/info", "/ws/info/**", "/topic/**", "/app/**").permitAll()
+                .requestMatchers("/api/register", "/api/login").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/chat/**").authenticated()
+                .requestMatchers("/api/notifications/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/studygroups/all").permitAll()
+                .requestMatchers("/api/studygroups/**", "/api/files/**", "/api/users/**", "/api/sessions/**").authenticated()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

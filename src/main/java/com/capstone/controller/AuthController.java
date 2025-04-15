@@ -25,11 +25,11 @@ public class AuthController {
     }
 
     @PostMapping("/login")  
-public ResponseEntity<?> loginUser(@RequestBody Map<String, String> request) {
-    String email = request.get("email");
-    String password = request.get("password");
+    public ResponseEntity<?> loginUser(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        String password = request.get("password");
 
-    return userService.authenticateUser(email, password);
-}
+        return userService.authenticateUser(email, password);
+    }
 
 }

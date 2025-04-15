@@ -23,6 +23,7 @@ const Login = () => {
       localStorage.setItem("token", response.token);
       localStorage.setItem("userId", response.userId);
       localStorage.setItem("userEmail", response.email || data.email);
+      localStorage.setItem("userName", response.name || "User");
       console.log("Login successful, redirecting...");
       navigate("/studygroups"); 
     } catch (error) {

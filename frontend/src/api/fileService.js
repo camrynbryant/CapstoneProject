@@ -69,9 +69,11 @@ const deleteFile = async (resourceId) => {
   });
 };
 
-export default {
+const fileService = {
   uploadFiles,
   getFilesForGroup,
   downloadFile,
   deleteFile,
 };
+
+export default fileService;
