@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity; 
 import org.springframework.http.HttpStatus; 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.util.List;
 import java.util.Optional;
@@ -94,4 +95,21 @@ public class StudyGroupController {
                                   .body("Failed to delete study group due to database error.");
         }
     }
+
+    @GetMapping("/joined/{email}")
+    public ResponseEntity<?> getJoinedStudyGroups(@PathVariable String email,
+                                                  @AuthenticationPrincipal org.springframework.security.core.userdetails.User userDetails) {
+        if (userDetails == null || !userDetails.getUsername().equals(email)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Forbidden");
+        }
+        try {
+            List<StudyGroup> groups = studyGroupRepository.findByMemberIdsContaining(email);
+            return ResponseEntity.ok(groups);
+        } catch (Exception e) {
+            logger.error("Error retrieving joined study groups for email: {}", email, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("Error retrieving joined study groups.");
+        }
+    }
+
 }
