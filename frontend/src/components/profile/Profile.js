@@ -1,5 +1,3 @@
-// language: javascript
-// filepath: /Users/kusi/Downloads/CapstoneProject-10/frontend/src/components/profile/Profile.js
 import React, { useState, useRef, useEffect } from "react";
 import { 
   uploadProfilePicture, 
@@ -23,11 +21,10 @@ const Profile = () => {
 
   const [joinedGroups, setJoinedGroups] = useState([]);
 
-  // Handle file change and upload logic
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    // Create a local preview (optional)
+
     const localUrl = URL.createObjectURL(file);
     setProfilePic(localUrl);
     try {
@@ -41,7 +38,6 @@ const Profile = () => {
     }
   };
 
-  // Fetch study interests on mount
   useEffect(() => {
     const fetchInterests = async () => {
       try {
@@ -56,7 +52,6 @@ const Profile = () => {
     if (token) fetchInterests();
   }, [token, userId]);
 
-  // Fetch joined study groups on mount
   useEffect(() => {
     const fetchJoinedGroups = async () => {
       try {
