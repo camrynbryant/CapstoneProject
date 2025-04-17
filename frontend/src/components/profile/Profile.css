@@ -1,6 +1,3 @@
-/* language: css */
-
-/* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Lato&family=Montserrat&display=swap');
 
 .profile-picture-container {
@@ -33,9 +30,8 @@
     color: #aaa;
 }
 
-/* My Study Interests section (using Montserrat) */
 .study-interests-section ul {
-    padding-left: 20px; /* Adjust if needed */
+    padding-left: 20px; 
 }
 
 .study-interests-section ul li {
@@ -45,9 +41,8 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-/* Joined Study Groups section (using Lato) */
 .joined-groups-section ul {
-    padding-left: 20px; /* Adjust if needed */
+    padding-left: 20px; 
 }
 
 .joined-groups-section ul li {
