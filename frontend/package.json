@@ -5,6 +5,8 @@
   "dependencies": {
     "@stomp/stompjs": "^7.1.1",
     "axios": "^1.7.9",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "cra-template": "1.2.0",
     "jwt-decode": "^4.0.0",
     "react": "^18.3.1",
