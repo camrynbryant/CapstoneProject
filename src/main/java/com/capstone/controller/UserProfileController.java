@@ -26,7 +26,7 @@ public class UserProfileController {
 
     @PostMapping("/profile-picture")
     public ResponseEntity<?> updateProfilePicture(@RequestParam("file") MultipartFile file,
-                                                  @AuthenticationPrincipal org.springframework.security.core.userdetails.User userDetails) {
+    @AuthenticationPrincipal org.springframework.security.core.userdetails.User userDetails) {
         if (userDetails == null) {
             return ResponseEntity.status(401).body("Unauthorized");
         }
