@@ -1,24 +1,38 @@
 package com.capstone.controller;
 
-import com.capstone.models.StudySession;
-import com.capstone.models.StudyGroup;
-import com.capstone.service.NotificationService;
-import com.capstone.repository.StudySessionRepository;
-import com.capstone.repository.StudyGroupRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.ArrayList;
+import com.capstone.models.StudyGroup;
+import com.capstone.models.StudySession;
+import com.capstone.models.User;
+import com.capstone.models.enums.AchievementType;
+import com.capstone.repository.StudyGroupRepository;
+import com.capstone.repository.StudySessionRepository;
+import com.capstone.repository.UserRepository;
+import com.capstone.service.AchievementService;
+import com.capstone.service.NotificationService;
 
 @RestController
 @RequestMapping("/api/sessions")
@@ -34,6 +48,12 @@ public class StudySessionController {
 
     @Autowired
     private NotificationService notificationService;
+
+    @Autowired
+    private AchievementService achievementService;
+
+    @Autowired
+    private UserRepository userRepository; 
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
@@ -53,6 +73,17 @@ public class StudySessionController {
 
         session.setCreatedBy(userEmail);
         StudySession savedSession = sessionRepository.save(session);
+
+        // --- Achievement Check ---
+        Optional<User> userOpt = userRepository.findByEmail(userEmail);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            int newCount = user.incrementStudySessionsCreated();
+            userRepository.save(user); // Save updated count
+            achievementService.checkAndAwardAchievements(user.getId(), AchievementType.STUDY_SESSION_CREATED, newCount);
+        } else {
+            logger.warn("User {} not found after creating session {} for achievement tracking.", userEmail, savedSession.getId());
+        }
 
         try {
             StudyGroup group = studyGroupRepository.findById(groupId)
@@ -146,7 +177,32 @@ public class StudySessionController {
             if (!session.getParticipantIds().contains(userId)) {
                 session.getParticipantIds().add(userId);
             }
-            return sessionRepository.save(session);
+
+            boolean newlyJoined = false; // Flag to check if user was actually added
+            if (session.getParticipantIds() == null) {
+                session.setParticipantIds(new ArrayList<>());
+            }
+            if (!session.getParticipantIds().contains(userEmail)) { // Use email
+                session.getParticipantIds().add(userEmail); // Use email
+                newlyJoined = true;
+            }
+
+            StudySession updatedSession = sessionRepository.save(session);
+
+            // --- Achievement Check ---
+            if (newlyJoined) {
+                Optional<User> userOpt = userRepository.findByEmail(userEmail);
+                if (userOpt.isPresent()) {
+                    User user = userOpt.get();
+                    int newCount = user.incrementStudySessionsJoined();
+                    userRepository.save(user); // Save updated count
+                    achievementService.checkAndAwardAchievements(user.getId(), AchievementType.STUDY_SESSION_JOINED, newCount);
+                } else {
+                    logger.warn("User {} not found after joining session {} for achievement tracking.", userEmail, updatedSession.getId());
+                }
+            }
+
+            return updatedSession;
         }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Study session not found"));
     }
 

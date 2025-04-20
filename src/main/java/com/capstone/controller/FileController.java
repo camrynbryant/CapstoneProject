@@ -32,9 +32,13 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.capstone.models.StudyGroup;
 import com.capstone.models.StudyResource;
+import com.capstone.models.User;
+import com.capstone.models.enums.AchievementType;
 import com.capstone.repository.StudyGroupRepository;
-import com.capstone.service.FileStorageService;
-import com.capstone.service.NotificationService;
+import com.capstone.repository.UserRepository;
+import com.capstone.service.AchievementService;
+import com.capstone.service.FileStorageService; 
+import com.capstone.service.NotificationService; 
 
 @RestController
 @RequestMapping("/api")
@@ -50,6 +54,12 @@ public class FileController {
 
     @Autowired
     private StudyGroupRepository groupRepository;
+
+    @Autowired
+    private AchievementService achievementService; 
+
+    @Autowired
+    private UserRepository userRepository; 
 
     private String getCurrentUserEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -70,6 +80,12 @@ public class FileController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No files selected for upload.");
         }
 
+        Optional<User> userOpt = userRepository.findByEmail(uploaderEmail);
+        User uploader = userOpt.orElse(null);
+        if (uploader == null) {
+             logger.warn("Uploader {} not found for achievement tracking during file upload.", uploaderEmail);
+        }
+
         List<StudyResource> savedResources = new ArrayList<>();
         List<String> errorMessages = new ArrayList<>();
 
@@ -77,6 +93,12 @@ public class FileController {
             try {
                 StudyResource savedResource = fileStorageService.storeFile(file, groupId, uploaderEmail, false);
                 savedResources.add(savedResource);
+
+                if (uploader != null) {
+                    int newCount = uploader.incrementFilesUploaded();
+                    userRepository.save(uploader); 
+                    achievementService.checkAndAwardAchievements(uploader.getId(), AchievementType.FILE_UPLOADED, newCount);
+                }
             } catch (IllegalArgumentException | SecurityException e) {
                 logger.warn("File upload validation failed for user {} file '{}': {}", uploaderEmail, file.getOriginalFilename(), e.getMessage());
                 errorMessages.add("Failed to upload '" + file.getOriginalFilename() + "': " + e.getMessage());

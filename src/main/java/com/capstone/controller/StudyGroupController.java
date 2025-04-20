@@ -1,17 +1,30 @@
 package com.capstone.controller;
 
-import com.capstone.models.StudyGroup;
-import com.capstone.repository.StudyGroupRepository;
-import org.slf4j.Logger; 
-import org.slf4j.LoggerFactory; 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity; 
-import org.springframework.http.HttpStatus; 
-import org.springframework.web.bind.annotation.*;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.slf4j.Logger; 
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.capstone.models.StudyGroup;
+import com.capstone.models.User;
+import com.capstone.models.enums.AchievementType;
+import com.capstone.repository.StudyGroupRepository;
+import com.capstone.repository.UserRepository;
+import com.capstone.service.AchievementService;
 
 @RestController
 @RequestMapping("/api/studygroups")
@@ -22,12 +35,43 @@ public class StudyGroupController {
     @Autowired
     private StudyGroupRepository studyGroupRepository;
 
+    @Autowired
+    private AchievementService achievementService; 
+
+    @Autowired
+    private UserRepository userRepository; 
+
     @PostMapping("/add")
-    public ResponseEntity<?> createStudyGroup(@RequestBody StudyGroup studyGroup) {
+    public ResponseEntity<?> createStudyGroup(@RequestBody StudyGroup studyGroup, @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User details not available.");
+        }
+        String creatorEmail = userDetails.getUsername();
+        studyGroup.setOwner(creatorEmail); // Set the owner explicitly
+
+        if (studyGroup.getMemberIds() == null) {
+            studyGroup.setMemberIds(new java.util.ArrayList<>());
+        }
+        if (!studyGroup.getMemberIds().contains(creatorEmail)) {
+            studyGroup.getMemberIds().add(creatorEmail);
+        }
+
+        
         try {
             logger.info("Attempting to save study group with name: {}", studyGroup.getName());
             StudyGroup savedGroup = studyGroupRepository.save(studyGroup);
             logger.info("Successfully saved study group with ID: {}", savedGroup.getId());
+            // --- Achievement Check ---
+            Optional<User> userOpt = userRepository.findByEmail(creatorEmail);
+            if (userOpt.isPresent()) {
+                User user = userOpt.get();
+                int newCount = user.incrementStudyGroupsCreated();
+                userRepository.save(user); // Save updated count
+                achievementService.checkAndAwardAchievements(user.getId(), AchievementType.STUDY_GROUP_CREATED, newCount);
+            } else {
+                logger.warn("User {} not found after creating group {} for achievement tracking.", creatorEmail, savedGroup.getId());
+            }
+
             return ResponseEntity.ok(savedGroup); 
         } catch (Exception e) {
             logger.error("!!! Failed to save study group with name: {}", studyGroup.getName(), e);

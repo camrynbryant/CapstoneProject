@@ -1,20 +1,23 @@
 package com.capstone.service;
 
-import com.capstone.models.Notification;
-import com.capstone.models.User;
-import com.capstone.repository.NotificationRepository;
-import com.capstone.repository.UserRepository;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import com.capstone.models.Notification;
+import com.capstone.repository.NotificationRepository;
+import com.capstone.repository.UserRepository;
 
 @Service
 public class NotificationService {
+
+    private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
 
     @Autowired
     private NotificationRepository notificationRepo;
@@ -30,6 +33,25 @@ public class NotificationService {
             notification.setCreatedAt(LocalDateTime.now());
             notification.setRead(false);
             notificationRepo.save(notification);
+        }
+    }
+
+    public void sendNotificationToUser(String userId, String message) {
+        if (userId == null || userId.isEmpty()) {
+            logger.warn("Attempted to send notification to null or empty userId.");
+            return;
+        }
+        try {
+            Notification notification = new Notification();
+
+            notification.setUserId(userId);
+            notification.setMessage(message);
+            notification.setCreatedAt(LocalDateTime.now());
+            notification.setRead(false);
+            notificationRepo.save(notification);
+            logger.debug("Saved notification via sendNotificationToUser for userId: {}", userId);
+        } catch (Exception e) {
+            logger.error("Failed to save notification for userId {}: {}", userId, e.getMessage(), e);
         }
     }
     

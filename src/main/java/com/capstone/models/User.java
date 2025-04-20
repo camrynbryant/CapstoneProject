@@ -1,10 +1,11 @@
 package com.capstone.models;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import java.util.HashSet;
-import java.util.Set;
 
 @Document(collection = "users")
 public class User {
@@ -19,6 +20,12 @@ public class User {
     @Field("studyInterests")
     private Set<String> studyInterests = new HashSet<>();
 
+        // --- Achievement Counters ---
+    private int studySessionsCreatedCount = 0;
+    private int studyGroupsCreatedCount = 0;
+    private int studySessionsJoinedCount = 0;
+    private int filesUploadedCount = 0;
+
     public User() {}
 
     public User(String name, String email, String password) {
@@ -27,6 +34,10 @@ public class User {
         this.password = password;
         this.notificationsEnabled = true;
         this.studyInterests = new HashSet<>();
+        this.studySessionsCreatedCount = 0;
+        this.studyGroupsCreatedCount = 0;
+        this.studySessionsJoinedCount = 0;
+        this.filesUploadedCount = 0;
     }
 
 
@@ -84,5 +95,50 @@ public class User {
 
     public void setStudyInterests(Set<String> studyInterests) {
         this.studyInterests = studyInterests;
+    }
+    
+
+    // --- Achievement Counter Getters/Setters ---
+    public int getStudySessionsCreatedCount() { 
+        return studySessionsCreatedCount; 
+    }
+    public void setStudySessionsCreatedCount(int studySessionsCreatedCount) { 
+        this.studySessionsCreatedCount = studySessionsCreatedCount; 
+    }
+    public int getStudyGroupsCreatedCount() { 
+        return studyGroupsCreatedCount; 
+    }
+    public void setStudyGroupsCreatedCount(int studyGroupsCreatedCount) { 
+        this.studyGroupsCreatedCount = studyGroupsCreatedCount; 
+    }
+    public int getStudySessionsJoinedCount() { 
+        return studySessionsJoinedCount; 
+    }
+    public void setStudySessionsJoinedCount(int studySessionsJoinedCount) { 
+        this.studySessionsJoinedCount = studySessionsJoinedCount; 
+    }
+    public int getFilesUploadedCount() { 
+        return filesUploadedCount; 
+    }
+    public void setFilesUploadedCount(int filesUploadedCount) { 
+        this.filesUploadedCount = filesUploadedCount; 
+    }
+    
+    // --- Convenience methods for incrementing counters ---
+    public int incrementStudySessionsCreated() {
+        this.studySessionsCreatedCount++;
+        return this.studySessionsCreatedCount;
+    }
+    public int incrementStudyGroupsCreated() {
+        this.studyGroupsCreatedCount++;
+        return this.studyGroupsCreatedCount;
+    }
+    public int incrementStudySessionsJoined() {
+        this.studySessionsJoinedCount++;
+        return this.studySessionsJoinedCount;
+    }
+     public int incrementFilesUploaded() {
+        this.filesUploadedCount++;
+        return this.filesUploadedCount;
     }
 }

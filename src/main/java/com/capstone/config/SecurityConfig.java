@@ -34,6 +34,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/notifications/**").authenticated()
                 .requestMatchers(HttpMethod.GET, "/api/studygroups/all").permitAll()
                 .requestMatchers("/api/studygroups/**", "/api/files/**", "/api/users/**", "/api/sessions/**").authenticated()
+                .requestMatchers("/api/achievements/me").authenticated()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
