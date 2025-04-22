@@ -1,0 +1,52 @@
+.profile-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+    font-family: sans-serif;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .profile-picture-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  
+  .profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .profile-picture-placeholder {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: #666;
+  }
+  
+  .profile-section {
+    margin: 2rem 0;
+  }
+  
+  .interest-list,
+  .group-list,
+  .achievements-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .interest-item,
+  .group-item {
+    background-color: #f7f7f7;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+  }
