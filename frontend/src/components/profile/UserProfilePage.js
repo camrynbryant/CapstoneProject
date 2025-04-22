@@ -66,18 +66,10 @@ const UserProfilePage = () => {
       <h1>{userProfile.email}'s Profile</h1>
 
       <div className="profile-picture-container">
-        {userProfile.profilePictureUrl ? (
-          <img
-            src={userProfile.profilePictureUrl}
-            alt="Profile"
-            className="profile-picture"
-          />
-        ) : (
-          <div className="profile-picture-placeholder">
-            <span>{userProfile.email.charAt(0).toUpperCase()}</span>
-          </div>
-        )}
-      </div>
+  <div className="profile-picture-placeholder">
+    <span>{userProfile.email.charAt(0).toUpperCase()}</span>
+  </div>
+</div>
 
       <div className="study-interests-section profile-section">
         <h2>Study Interests</h2>
