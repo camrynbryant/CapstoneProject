@@ -492,3 +492,14 @@
     border-radius: 6px;
     border: 1px dashed #ced4da;
 }
+
+.group-members-section a {
+    color: #7a7373;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  
+  .group-members-section a:hover {
+    color: #333232;
+    text-decoration: underline;
+  }
