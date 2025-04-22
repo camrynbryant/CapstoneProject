@@ -38,12 +38,12 @@ public class UserControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         user1 = new User();
-        user1.setId(1L);
+        user1.setId("1");
         user1.setName("John Doe");
         user1.setEmail("john.doe@example.com");
 
         user2 = new User();
-        user2.setId(2L);
+        user2.setId("2");
         user2.setName("Jane Doe");
         user2.setEmail("jane.doe@example.com");
     }
@@ -70,5 +70,14 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].name").value("John Doe"))
                 .andExpect(jsonPath("$[1].name").value("Jane Doe"));
+    }
+    @Test
+    void testGetUserById() throws Exception {
+        when(userRepository.findById("1")).thenReturn(java.util.Optional.of(user1));
+
+        mockMvc.perform(get("/api/users/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("John Doe"))
+                .andExpect(jsonPath("$.email").value("john.doe@example.com"));
     }
 }
