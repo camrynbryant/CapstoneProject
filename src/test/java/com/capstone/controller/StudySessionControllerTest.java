@@ -5,7 +5,8 @@ import com.capstone.models.StudyGroup;
 import com.capstone.models.StudySession;
 import com.capstone.repository.StudyGroupRepository;
 import com.capstone.repository.StudySessionRepository;
-import com.capstone.security.JwtAuthenticationFilter;
+import com.capstone.repository.UserRepository;
+import com.capstone.service.AchievementService;
 import com.capstone.service.NotificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -17,27 +18,30 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.ArrayList;
 
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.not;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq; 
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.hamcrest.Matchers.*;
 
 @WebMvcTest(controllers = StudySessionController.class,
         excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class))
@@ -55,6 +59,12 @@ public class StudySessionControllerTest {
     @MockBean
     private NotificationService notificationService;
 
+    @MockBean
+    private AchievementService achievementService;
+
+    @MockBean
+    private UserRepository userRepository;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -67,10 +77,15 @@ public class StudySessionControllerTest {
 
     @BeforeEach
     public void setUp() {
-         objectMapper.registerModule(new JavaTimeModule());
-        session1 = new StudySession("s1", groupId, "Topic 1", "Desc 1", LocalDateTime.now(), LocalDateTime.now().plusHours(1), "Loc 1", new ArrayList<>(List.of(testUserEmail)), testUserEmail);
-        session2 = new StudySession("s2", groupId, "Topic 2", "Desc 2", LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(1).plusHours(1), "Loc 2", new ArrayList<>(), testUserEmail);
-        testGroup = new StudyGroup("Group 1", "Desc", testUserEmail, new ArrayList<>(List.of(testUserEmail, otherUserEmail)));
+        objectMapper.registerModule(new JavaTimeModule());
+        session1 = new StudySession("s1", groupId, "Topic 1", "Desc 1",
+                LocalDateTime.now(), LocalDateTime.now().plusHours(1), "Loc 1",
+                new ArrayList<>(List.of(testUserEmail)), testUserEmail);
+        session2 = new StudySession("s2", groupId, "Topic 2", "Desc 2",
+                LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(1).plusHours(1), "Loc 2",
+                new ArrayList<>(), testUserEmail);
+        testGroup = new StudyGroup("Group 1", "Desc", testUserEmail,
+                new ArrayList<>(List.of(testUserEmail, otherUserEmail)));
         testGroup.setId(groupId);
     }
 
@@ -101,7 +116,7 @@ public class StudySessionControllerTest {
 
     @Test
     public void getSessionsByGroup_whenUnauthenticated_shouldReturnUnauthorized() throws Exception {
-         mockMvc.perform(get("/api/sessions/group/{groupId}", groupId)
+        mockMvc.perform(get("/api/sessions/group/{groupId}", groupId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
     }
@@ -113,14 +128,14 @@ public class StudySessionControllerTest {
         when(studyGroupRepository.findById(groupId)).thenReturn(Optional.of(testGroup));
         when(sessionRepository.save(any(StudySession.class))).thenAnswer(invocation -> {
             StudySession sessionToSave = invocation.getArgument(0);
-            if(sessionToSave.getId() == null) sessionToSave.setId("newSessionId");
+            if (sessionToSave.getId() == null) sessionToSave.setId("newSessionId");
             sessionToSave.setCreatedBy(testUserEmail);
             return sessionToSave;
         });
         doNothing().when(notificationService).sendNotificationToUsers(any(), anyString());
 
-
-        StudySession newSession = new StudySession(null, groupId, "New Topic", "New Desc", LocalDateTime.now().plusHours(2), LocalDateTime.now().plusHours(3), "New Loc", new ArrayList<>(), null);
+        StudySession newSession = new StudySession(null, groupId, "New Topic", "New Desc",
+                LocalDateTime.now().plusHours(2), LocalDateTime.now().plusHours(3), "New Loc", new ArrayList<>(), null);
 
         mockMvc.perform(post("/api/sessions")
                         .with(csrf())
@@ -132,14 +147,15 @@ public class StudySessionControllerTest {
                 .andExpect(jsonPath("$.topic").value("New Topic"))
                 .andExpect(jsonPath("$.createdBy").value(testUserEmail));
 
-        verify(notificationService).sendNotificationToUsers(eq(testGroup.getMemberIds()), anyString());
-    }
+verify(notificationService).sendNotificationToUsers(eq(testGroup.getMemberIds()), anyString());  
+  }
 
     @Test
     @WithMockUser(username = "other@example.com")
     public void createSession_whenNotMember_shouldReturnForbidden() throws Exception {
         when(studyGroupRepository.existsByIdAndMemberIdsContaining(groupId, otherUserEmail)).thenReturn(false);
-        StudySession newSession = new StudySession(null, groupId, "New Topic", "New Desc", LocalDateTime.now().plusHours(2), LocalDateTime.now().plusHours(3), "New Loc", new ArrayList<>(), null);
+        StudySession newSession = new StudySession(null, groupId, "New Topic", "New Desc",
+                LocalDateTime.now().plusHours(2), LocalDateTime.now().plusHours(3), "New Loc", new ArrayList<>(), null);
 
         mockMvc.perform(post("/api/sessions")
                         .with(csrf())
@@ -155,7 +171,8 @@ public class StudySessionControllerTest {
         when(sessionRepository.findById("s1")).thenReturn(Optional.of(session1));
         when(sessionRepository.save(any(StudySession.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        StudySession updatedDetails = new StudySession("s1", groupId, "Updated Topic", "Updated Desc", session1.getStartTime(), session1.getEndTime(), "Updated Loc", session1.getParticipantIds(), testUserEmail);
+        StudySession updatedDetails = new StudySession("s1", groupId, "Updated Topic", "Updated Desc",
+                session1.getStartTime(), session1.getEndTime(), "Updated Loc", session1.getParticipantIds(), testUserEmail);
 
         mockMvc.perform(put("/api/sessions/{id}", "s1")
                         .with(csrf())
@@ -171,7 +188,8 @@ public class StudySessionControllerTest {
     public void updateSession_whenNotCreator_shouldReturnForbidden() throws Exception {
         session1.setCreatedBy(testUserEmail);
         when(sessionRepository.findById("s1")).thenReturn(Optional.of(session1));
-        StudySession updatedDetails = new StudySession("s1", groupId, "Updated Topic", "Updated Desc", session1.getStartTime(), session1.getEndTime(), "Updated Loc", session1.getParticipantIds(), testUserEmail);
+        StudySession updatedDetails = new StudySession("s1", groupId, "Updated Topic", "Updated Desc",
+                session1.getStartTime(), session1.getEndTime(), "Updated Loc", session1.getParticipantIds(), testUserEmail);
 
         mockMvc.perform(put("/api/sessions/{id}", "s1")
                         .with(csrf())
@@ -183,16 +201,16 @@ public class StudySessionControllerTest {
     @Test
     @WithMockUser(username = "test@example.com")
     public void updateSession_whenNotFound_shouldReturnNotFound() throws Exception {
-         when(sessionRepository.findById("nonexistent")).thenReturn(Optional.empty());
-         StudySession updatedDetails = new StudySession("nonexistent", groupId, "Updated Topic", "Updated Desc", LocalDateTime.now(), LocalDateTime.now().plusHours(1), "Updated Loc", new ArrayList<>(), testUserEmail);
+        when(sessionRepository.findById("nonexistent")).thenReturn(Optional.empty());
+        StudySession updatedDetails = new StudySession("nonexistent", groupId, "Updated Topic", "Updated Desc",
+                LocalDateTime.now(), LocalDateTime.now().plusHours(1), "Updated Loc", new ArrayList<>(), testUserEmail);
 
-         mockMvc.perform(put("/api/sessions/{id}", "nonexistent")
+        mockMvc.perform(put("/api/sessions/{id}", "nonexistent")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updatedDetails)))
                 .andExpect(status().isNotFound());
     }
-
 
     @Test
     @WithMockUser(username = "test@example.com")
@@ -219,7 +237,7 @@ public class StudySessionControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-     @Test
+    @Test
     @WithMockUser(username = "test@example.com")
     public void deleteSession_whenNotFound_shouldReturnNotFound() throws Exception {
         when(sessionRepository.findById("nonexistent")).thenReturn(Optional.empty());
@@ -236,11 +254,11 @@ public class StudySessionControllerTest {
         when(sessionRepository.findById("s1")).thenReturn(Optional.of(session1));
         when(studyGroupRepository.existsByIdAndMemberIdsContaining(groupId, otherUserEmail)).thenReturn(true);
         when(sessionRepository.save(any(StudySession.class))).thenAnswer(invocation -> {
-             StudySession savedSession = invocation.getArgument(0);
-             if(!savedSession.getParticipantIds().contains(otherUserEmail)) {
-                 savedSession.getParticipantIds().add(otherUserEmail);
-             }
-             return savedSession;
+            StudySession savedSession = invocation.getArgument(0);
+            if (!savedSession.getParticipantIds().contains(otherUserEmail)) {
+                savedSession.getParticipantIds().add(otherUserEmail);
+            }
+            return savedSession;
         });
 
         mockMvc.perform(put("/api/sessions/{id}/join", "s1")
@@ -253,7 +271,7 @@ public class StudySessionControllerTest {
     @Test
     @WithMockUser(username = "test@example.com")
     public void joinSession_whenNotSelf_shouldReturnForbidden() throws Exception {
-         mockMvc.perform(put("/api/sessions/{id}/join", "s1")
+        mockMvc.perform(put("/api/sessions/{id}/join", "s1")
                         .param("userId", otherUserEmail)
                         .with(csrf()))
                 .andExpect(status().isForbidden());
@@ -278,9 +296,9 @@ public class StudySessionControllerTest {
         when(sessionRepository.findById("s1")).thenReturn(Optional.of(session1));
         when(studyGroupRepository.existsByIdAndMemberIdsContaining(groupId, testUserEmail)).thenReturn(true);
         when(sessionRepository.save(any(StudySession.class))).thenAnswer(invocation -> {
-             StudySession savedSession = invocation.getArgument(0);
-             savedSession.getParticipantIds().remove(testUserEmail);
-             return savedSession;
+            StudySession savedSession = invocation.getArgument(0);
+            savedSession.getParticipantIds().remove(testUserEmail);
+            return savedSession;
         });
 
         mockMvc.perform(put("/api/sessions/{id}/leave", "s1")
@@ -294,10 +312,9 @@ public class StudySessionControllerTest {
     @Test
     @WithMockUser(username = "other@example.com")
     public void leaveSession_whenNotSelf_shouldReturnForbidden() throws Exception {
-         mockMvc.perform(put("/api/sessions/{id}/leave", "s1")
+        mockMvc.perform(put("/api/sessions/{id}/leave", "s1")
                         .param("userId", testUserEmail)
                         .with(csrf()))
                 .andExpect(status().isForbidden());
     }
-
 }
