@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class UserServiceTest {
@@ -26,14 +27,13 @@ class UserServiceTest {
 
     private AutoCloseable closeable;
 
-    @BeforeEach
-    void setup() {
-        closeable = MockitoAnnotations.openMocks(this);
-        userService = new UserService(userRepository);
-        // Set fake JWT secret
-        userService.getClass().getDeclaredFields(); // This helps initialize reflection
-        TestUtils.setField(userService, "jwtSecret", Base64.getEncoder().encodeToString("mytestsecretkey1234567890".getBytes()));
-    }
+@BeforeEach
+void setup() {
+    closeable = MockitoAnnotations.openMocks(this);
+    userService = new UserService(userRepository);
+    String longSecret = "thisisanincrediblylongandsecuresecretkey12345678";
+    TestUtils.setField(userService, "jwtSecret", Base64.getEncoder().encodeToString(longSecret.getBytes()));
+}
 
     @Test
     void testAuthenticateUser_validCredentials_returnsToken() {
