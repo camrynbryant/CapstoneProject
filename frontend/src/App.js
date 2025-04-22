@@ -12,6 +12,8 @@ import NotificationListener from "./components/notifications/NotificationListene
 import GroupChat from "./components/chat/GroupChat";
 import "./App.css";
 import Profile from "./components/profile/Profile";
+import UserProfilePage from "./components/profile/UserProfilePage";
+
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -66,6 +68,7 @@ function App() {
           <Route path="/studygroups/:groupId" element={<StudyGroupDetailPage />} />
           <Route path="/notifications" element={<NotificationsPage />} />
           <Route path="/groups/:groupId/chat" element={<GroupChat />} />
+          <Route path="/profile/:email" element={<UserProfilePage />} />
         </Routes>
       </div>
     </div>
