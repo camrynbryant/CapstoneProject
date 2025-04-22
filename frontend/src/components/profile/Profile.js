@@ -12,10 +12,7 @@ const Profile = () => {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userEmail") || "User";
 
-  const [profilePic] = useState(() => {
-    const storedPic = localStorage.getItem("profilePic");
-    return storedPic && storedPic !== "Profile" ? storedPic : null;
-  });
+  const profilePic = null;
 
   const [studyInterests, setStudyInterests] = useState([]);
   const [isAddingInterest, setIsAddingInterest] = useState(false);
