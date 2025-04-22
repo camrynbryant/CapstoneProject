@@ -26,7 +26,6 @@ public class ProfilePictureStorageService {
             throw new IOException("Only JPG/JPEG files are allowed.");
         }
         String filename = UUID.randomUUID().toString() + extension;
-        
         File uploadDir = new File(UPLOAD_DIR);
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
