@@ -47,7 +47,7 @@ public class StudyGroupController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User details not available.");
         }
         String creatorEmail = userDetails.getUsername();
-        studyGroup.setOwner(creatorEmail); // Set the owner explicitly
+        studyGroup.setOwner(creatorEmail); 
 
         if (studyGroup.getMemberIds() == null) {
             studyGroup.setMemberIds(new java.util.ArrayList<>());
@@ -61,12 +61,11 @@ public class StudyGroupController {
             logger.info("Attempting to save study group with name: {}", studyGroup.getName());
             StudyGroup savedGroup = studyGroupRepository.save(studyGroup);
             logger.info("Successfully saved study group with ID: {}", savedGroup.getId());
-            // --- Achievement Check ---
             Optional<User> userOpt = userRepository.findByEmail(creatorEmail);
             if (userOpt.isPresent()) {
                 User user = userOpt.get();
                 int newCount = user.incrementStudyGroupsCreated();
-                userRepository.save(user); // Save updated count
+                userRepository.save(user); 
                 achievementService.checkAndAwardAchievements(user.getId(), AchievementType.STUDY_GROUP_CREATED, newCount);
             } else {
                 logger.warn("User {} not found after creating group {} for achievement tracking.", creatorEmail, savedGroup.getId());
@@ -141,18 +140,14 @@ public class StudyGroupController {
     }
 
     @GetMapping("/joined/{email}")
-    public ResponseEntity<?> getJoinedStudyGroups(@PathVariable String email,
-                                                  @AuthenticationPrincipal org.springframework.security.core.userdetails.User userDetails) {
-        if (userDetails == null || !userDetails.getUsername().equals(email)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Forbidden");
-        }
+    public ResponseEntity<?> getJoinedStudyGroups(@PathVariable String email) {
         try {
-            List<StudyGroup> groups = studyGroupRepository.findByMemberIdsContaining(email);
-            return ResponseEntity.ok(groups);
+             List<StudyGroup> groups = studyGroupRepository.findByMemberIdsContaining(email);
+             return ResponseEntity.ok(groups);
         } catch (Exception e) {
-            logger.error("Error retrieving joined study groups for email: {}", email, e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body("Error retrieving joined study groups.");
+             logger.error("Error retrieving joined study groups for email: {}", email, e);
+             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                  .body("Error retrieving joined study groups.");
         }
     }
 
