@@ -36,6 +36,8 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
 
                 String userEmail = claims.getSubject();
                 attributes.put("userEmail", userEmail);
+
+                attributes.put("principal", (java.security.Principal) () -> userEmail);
                 return true;
             } catch (Exception e) {
                 return false;

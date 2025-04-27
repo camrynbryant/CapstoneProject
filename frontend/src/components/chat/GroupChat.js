@@ -6,8 +6,9 @@ import './GroupChat.css';
 import VideoCallModal from './VideoCallModal';
 
 const formatTime = (isoString) => {
+  if (!isoString) return '';
   const date = new Date(isoString);
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  return isNaN(date) ? '' : date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 };
 
 const GroupChat = () => {
@@ -27,31 +28,43 @@ const GroupChat = () => {
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      const { scrollTop, scrollHeight, clientHeight } = messagesEndRef.current.parentNode;
+      if (scrollHeight - scrollTop <= clientHeight + 100) {
+        messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
   const handleMessageReceived = useCallback((msg) => {
     console.log("Received WebSocket message:", msg);
-    if (msg.type === "CALL_STARTED" && msg.sender !== currentUser.email) {
+    console.log("FULL WebSocket message received:", JSON.stringify(msg, null, 2));
+    if (msg.type?.toUpperCase() === "CALL_STARTED" && msg.sender !== currentUser.email) {
       setIncomingCallBanner(`${msg.sender} has started a video call`);
       setTimeout(() => setIncomingCallBanner(null), 8000);
       return;
     }
 
-    if (msg.type === "CHAT") {
-      setMessages(prev => [...prev, msg]);
+    if (msg.type?.toUpperCase() === "CHAT") {
+      const msgWithTimestamp = {
+        ...msg,
+        timestamp: msg.timestamp || new Date().toISOString(),
+      };
+      console.log("Appending chat message:", msgWithTimestamp);
+      setMessages(prev => [...prev, msgWithTimestamp]);
     }
   }, [currentUser.email]);
 
   const handleSend = () => {
     if (newMessage.trim()) {
-      sendMessage(groupId, {
+      const message = {
         content: newMessage,
         senderEmail: currentUser.email,
         senderName: currentUser.name,
-        type: "CHAT"
-      });
+        type: "CHAT",
+        timestamp: new Date().toISOString()
+      };
+      sendMessage(groupId, message);
+      console.log("Sent message:", message);
       setNewMessage('');
     }
   };
@@ -78,7 +91,11 @@ const GroupChat = () => {
 
   useEffect(() => {
     getChatHistory(groupId).then(res => {
-      setMessages(res.data || []);
+      const formattedMessages = (res.data || []).map(msg => ({
+        ...msg,
+        timestamp: msg.timestamp || new Date().toISOString()
+      }));
+      setMessages(formattedMessages);
       scrollToBottom();
     });
 
@@ -116,10 +133,10 @@ const GroupChat = () => {
               }`}
             >
               <div className="message-content">
-                <strong>{msg.senderName}:</strong> {msg.content}
+                <strong>{msg.senderName || "Unknown"}:</strong> {msg.content || "(No message)"}
               </div>
               <div style={{ fontSize: '0.75rem', color: '#6c757d', marginTop: '2px' }}>
-                {formatTime(msg.timestamp)}
+                {msg.timestamp ? formatTime(msg.timestamp) : ""}
               </div>
             </div>
           ))}

@@ -31,16 +31,12 @@ public class DataInitializer implements CommandLineRunner {
     private void initializeAchievements() {
         List<Integer> thresholds = Arrays.asList(1, 5, 10, 20, 50, 100); 
 
-        // Study Session Created
         createAchievementsForType(AchievementType.STUDY_SESSION_CREATED, "Session Starter", "Created %d study session(s)", thresholds);
 
-        // Study Group Created
         createAchievementsForType(AchievementType.STUDY_GROUP_CREATED, "Group Founder", "Created %d study group(s)", thresholds);
 
-        // Study Session Joined
         createAchievementsForType(AchievementType.STUDY_SESSION_JOINED, "Active Participant", "Joined %d study session(s)", thresholds);
 
-        // File Uploaded
         createAchievementsForType(AchievementType.FILE_UPLOADED, "Resource Contributor", "Uploaded %d file(s)", thresholds);
     }
 
@@ -53,7 +49,6 @@ public class DataInitializer implements CommandLineRunner {
 
 
             if (!alreadyExists) {
-                // Simple icon placeholder - replace with actual URLs/paths if available
                 String iconUrl = "/icons/achievement_" + type.name().toLowerCase() + "_" + threshold + ".png";
                 Achievement achievement = new Achievement(name, description, type, threshold, iconUrl);
                 try {

@@ -1,7 +1,6 @@
 package com.capstone.security;
 
 import org.springframework.http.server.ServerHttpRequest;
-import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
@@ -12,8 +11,12 @@ public class CustomHandshakeHandler extends DefaultHandshakeHandler {
 
     @Override
     protected Principal determineUser(ServerHttpRequest request,
-                                      WebSocketHandler wsHandler,
-                                      Map<String, Object> attributes) {
-        return (Principal) attributes.get("SPRING.PRINCIPAL");
+                                       WebSocketHandler wsHandler,
+                                       Map<String, Object> attributes) {
+        Object principalAttr = attributes.get("principal");
+        if (principalAttr instanceof Principal) {
+            return (Principal) principalAttr;
+        }
+        return null;
     }
 }

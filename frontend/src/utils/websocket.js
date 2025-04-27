@@ -1,4 +1,5 @@
 import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 
 let stompClient = null;
 
@@ -6,7 +7,7 @@ export function connect({ groupId, currentUser, onMessageReceived, onConnected, 
   const token = localStorage.getItem("token");
 
   stompClient = new Client({
-    brokerURL: `ws://localhost:8080/ws?token=${token}`,
+    webSocketFactory: () => new SockJS(`http://localhost:8080/ws?token=${token}`),
     connectHeaders: {
       Authorization: `Bearer ${token}`,
     },

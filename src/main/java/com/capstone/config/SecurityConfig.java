@@ -28,7 +28,7 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/ws/**", "/ws/info", "/ws/info/**", "/topic/**", "/app/**").permitAll()
+                .requestMatchers("/ws/**", "/topic/**", "/app/**", "/ws/info", "/ws/info/**").permitAll()
                 .requestMatchers("/api/register", "/api/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/chat/**").authenticated()
                 .requestMatchers("/api/notifications/**").authenticated()

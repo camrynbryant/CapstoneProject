@@ -21,12 +21,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/ws")
                 .addInterceptors(jwtHandshakeInterceptor)
                 .setHandshakeHandler(new CustomHandshakeHandler())
-                .setAllowedOriginPatterns("http://localhost:3000", "*");
+                .setAllowedOriginPatterns("http://localhost:3000", "*")
+                .withSockJS(); 
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic");
-        config.setApplicationDestinationPrefixes("/app");
+        config.enableSimpleBroker("/topic", "/queue"); 
+        config.setApplicationDestinationPrefixes("/app"); 
     }
 }

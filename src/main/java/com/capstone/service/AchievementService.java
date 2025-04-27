@@ -65,7 +65,6 @@ public class AchievementService {
 
                     if (user.isNotificationsEnabled()) {
                         String message = "Achievement Unlocked: " + achievement.getName() + "! " + achievement.getDescription();
-                        // Pass user's email to the notification service
                         notificationService.sendNotificationToUser(user.getEmail(), message);
                         logger.debug("Sent achievement notification to user email {}", user.getEmail());
                     }
