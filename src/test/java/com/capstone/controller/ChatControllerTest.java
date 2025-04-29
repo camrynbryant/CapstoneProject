@@ -11,9 +11,12 @@ import org.mockito.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 class ChatControllerTest {
@@ -36,9 +39,18 @@ class ChatControllerTest {
     @Captor
     private ArgumentCaptor<ChatMessage> chatMessageCaptor;
 
+    @Captor
+    private ArgumentCaptor<Object> payloadCaptor;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    void testHandleChatMessage_withNullPrincipal_shouldDoNothing() {
+        chatController.handleChatMessage("someGroup", new ChatMessage(), null);
+        verifyNoInteractions(userRepository, chatMessageRepository, messagingTemplate);
     }
 
     @Test
@@ -50,40 +62,39 @@ class ChatControllerTest {
 
         ChatMessage incomingMessage = new ChatMessage();
         incomingMessage.setContent("Test message");
-        incomingMessage.setType(null); // should default to CHAT
+        incomingMessage.setType(null); // defaults to CHAT
 
         when(principal.getName()).thenReturn(userEmail);
         when(userRepository.findByEmail(userEmail))
-                .thenReturn(Optional.of(new User(userName, userEmail, "password123")));
-
+            .thenReturn(Optional.of(new User(userName, userEmail, "password123")));
         when(chatMessageRepository.save(any(ChatMessage.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0)); // echo
+            .thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
         chatController.handleChatMessage(groupId, incomingMessage, principal);
 
-        // Assert
+        // Assert saved entity
         verify(chatMessageRepository).save(chatMessageCaptor.capture());
         ChatMessage savedMessage = chatMessageCaptor.getValue();
-
-        assertEquals(userEmail, savedMessage.getSenderEmail());
-        assertEquals(userName, savedMessage.getSenderName());
-        assertEquals(groupId, savedMessage.getGroupId());
-        assertEquals(MessageType.CHAT, savedMessage.getType());
+        assertEquals(groupId,            savedMessage.getGroupId());
+        assertEquals(userEmail,          savedMessage.getSenderEmail());
+        assertEquals(userName,           savedMessage.getSenderName());
+        assertEquals(MessageType.CHAT,   savedMessage.getType());
         assertNotNull(savedMessage.getTimestamp());
 
-        verify(messagingTemplate).convertAndSend(
-                eq("/topic/group/" + groupId),
-                eq(savedMessage)
-        );
-    }
+verify(messagingTemplate).convertAndSend(
+    eq("/topic/group/" + groupId),
+    payloadCaptor.capture()
+);
+Object raw = payloadCaptor.getValue();
+assertTrue(raw instanceof Map);
+@SuppressWarnings("unchecked")
+Map<String, Object> payload = (Map<String, Object>) raw;
 
-    @Test
-    void testHandleChatMessage_withNullPrincipal_shouldDoNothing() {
-        // Act
-        chatController.handleChatMessage("someGroup", new ChatMessage(), null);
-
-        // Assert
-        verifyNoInteractions(userRepository, chatMessageRepository, messagingTemplate);
+assertEquals(userName,             payload.get("senderName"));
+assertEquals(userEmail,            payload.get("senderEmail"));
+assertEquals(MessageType.CHAT.toString(), payload.get("type"));
+assertEquals("Test message",       payload.get("content"));
+assertDoesNotThrow(() -> LocalDateTime.parse((String) payload.get("timestamp")));
     }
 }
