@@ -1,0 +1,64 @@
+// use mongosh < database/capstone_init.txt to run
+
+use virtual_study_db;
+
+db.users.insertMany([
+  {
+    _id: ObjectId("644a1f2b2f8b4d1b8e3e21a1"),
+    username: "camryn_student",
+    email: "camryn@example.com",
+    password: "hashed_password_here",
+    interests: ["Computer Science", "Math"],
+    achievements: [],
+    joinedGroups: ["644a1f2b2f8b4d1b8e3e21a3"]
+  },
+  {
+    _id: ObjectId("644a1f2b2f8b4d1b8e3e21a2"),
+    username: "kc_student",
+    email: "kc@example.com",
+    password: "hashed_password_here",
+    interests: ["Biology", "Chemistry"],
+    achievements: [],
+    joinedGroups: ["644a1f2b2f8b4d1b8e3e21a3"]
+  }
+]);
+
+db.studyGroups.insertOne({
+  _id: ObjectId("644a1f2b2f8b4d1b8e3e21a3"),
+  name: "Virtual Math Wizards",
+  description: "Advanced calculus study group",
+  creatorId: "644a1f2b2f8b4d1b8e3e21a1",
+  interests: ["Math"],
+  memberIds: ["644a1f2b2f8b4d1b8e3e21a1", "644a1f2b2f8b4d1b8e3e21a2"],
+  studySessions: ["644a1f2b2f8b4d1b8e3e21a5"],
+  chatMessages: ["644a1f2b2f8b4d1b8e3e21a4"]
+});
+
+db.studySessions.insertOne({
+  _id: ObjectId("644a1f2b2f8b4d1b8e3e21a5"),
+  groupId: "644a1f2b2f8b4d1b8e3e21a3",
+  title: "Calculus Review Session",
+  description: "Cover derivatives and integrals",
+  scheduledDate: ISODate("2025-05-01T18:00:00Z")
+});
+
+db.chatMessages.insertOne({
+  _id: ObjectId("644a1f2b2f8b4d1b8e3e21a4"),
+  groupId: "644a1f2b2f8b4d1b8e3e21a3",
+  senderId: "644a1f2b2f8b4d1b8e3e21a1",
+  message: "Hey team, excited for the session next week!",
+  timestamp: new Date()
+});
+
+db.achievements.insertMany([
+  {
+    _id: ObjectId("644a1f2b2f8b4d1b8e3e21a6"),
+    title: "First Session Attended",
+    description: "Congratulations on attending your first study session!"
+  },
+  {
+    _id: ObjectId("644a1f2b2f8b4d1b8e3e21a7"),
+    title: "Top Communicator",
+    description: "Sent 20+ chat messages in study groups."
+  }
+]);
