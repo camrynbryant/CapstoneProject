@@ -1,6 +1,6 @@
 # Virtual Study - Capstone Project
 
-Virtual Study is an online platform that allows students to form study groups, chat in real time, schedule study sessions, and hold video meetings — all in one place.  
+Virtual Study is an online platform that allows students to form study groups, chat in real time, schedule study sessions, and hold video meetings all in one place.  
 This capstone project was developed to make academic collaboration easier and more engaging.
 
 ## Technologies Used
