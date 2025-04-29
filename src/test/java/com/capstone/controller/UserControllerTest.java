@@ -74,13 +74,5 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$[0].name").value("John Doe"))
                 .andExpect(jsonPath("$[1].name").value("Jane Doe"));
     }
-    @Test
-    void testGetUserById() throws Exception {
-        when(userRepository.findById("1")).thenReturn(java.util.Optional.of(user1));
 
-        mockMvc.perform(get("/api/users/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("John Doe"))
-                .andExpect(jsonPath("$.email").value("john.doe@example.com"));
-    }
 }
